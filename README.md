@@ -2,8 +2,8 @@
 
 Time Based Quiz using:
 
-#PHP
-#AJAX
-#JAVASCRIPT
-#HTML
-#CSS
+##PHP
+##AJAX
+##JAVASCRIPT
+##HTML
+##CSS
