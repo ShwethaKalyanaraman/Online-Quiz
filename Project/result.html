@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Result</title>
+	<script type="text/javascript">
+		
+		var xhttp=new XMLHttpRequest();
+    	xhttp.onreadystatechange= function(){
+    	if(xhttp.readyState==4 && xhttp.status==200){
+    		
+    			document.getElementById("result").innerHTML=xhttp.responseText;
+
+    		}
+   		 };
+    	xhttp.open("GET", "load.php?c=4", true);
+	    xhttp.send();
+	</script>
+</head>
+<body>
+<style type="text/css">
+	h2{
+		border: 2px solid #ff6600;
+		background-color:#ff6600;
+		border-radius: 15px 50px;
+		padding: 20px;
+		font-size:32px;
+		font-style: italic;
+		font: Arial;
+		margin-top: 5px;
+
+	}
+
+	#message{
+		font-style: bold;
+		font-size: 32px;
+		font:Arial;
+		margin-left: 10px;
+
+	}
+	#result{
+		font-style: bold;
+		font-size: 32px;
+		font:Arial;
+		margin-left: 10px;
+		
+	}
+	#log{
+		margin-left: 90%;
+	}
+</style>
+<a id="log" href="logout.php">Logout</a>
+<h2>SCOREBOARD</h2>
+<p id="message">Your Score is:</p>
+<p id="result"></p>
+</body>
+</html>

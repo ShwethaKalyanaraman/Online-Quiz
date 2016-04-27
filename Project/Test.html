@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Online Test</title>
+	<script type="text/javascript">
+
+	var question=[],i=0,qnum=0,flag=[],rflag=[];
+
+	window.onload = function () {
+    var fiveMinutes = 60 *1,
+        display = document.querySelector('#time');
+    startTimer(fiveMinutes, display);
+
+
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+     	question=JSON.parse(xhttp.responseText);
+
+     	for(var i=0;i<question.length;i++)
+     		flag[i]=0;
+     	fetch();
+     	
+    }
+  };
+	  xhttp.open("GET", "load.php?c=1", true);
+	  xhttp.send();
+
+    }
+
+	function fetch(){
+  		var data=[];
+	 var xhttp=new XMLHttpRequest();
+	    xhttp.onreadystatechange = function() {
+	    if (xhttp.readyState == 4 && xhttp.status == 200) {
+	    	data=JSON.parse(xhttp.responseText);
+	     	document.getElementById("q").innerHTML=(++qnum)+"."+data["question"];
+	     	document.getElementById("opt1").innerHTML=data["opt1"];
+	     	document.getElementById("opt2").innerHTML=data["opt2"];
+	     	document.getElementById("opt3").innerHTML=data["opt3"];
+	     	document.getElementById("opt4").innerHTML=data["opt4"];
+
+	     	document.getElementById("option1").value=data["opt1"];
+	     	document.getElementById("option2").value=data["opt2"];
+	     	document.getElementById("option3").value=data["opt3"];
+	     	document.getElementById("option4").value=data["opt4"];
+	    }
+	  };
+	  xhttp.open("GET", "load.php?c=2&qid="+question[i], true);
+	  xhttp.send();
+	  
+
+    }
+
+    function next(){
+    	var data=[];
+
+    	
+    	if(qnum<8){
+    	var xhttp=new XMLHttpRequest();
+	    xhttp.onreadystatechange = function() {
+	    if (xhttp.readyState == 4 && xhttp.status == 200) {
+	     	data=JSON.parse(xhttp.responseText);
+	     	document.getElementById("q").innerHTML=(++qnum)+"."+data["question"];
+	     	document.getElementById("opt1").innerHTML=data["opt1"];
+	     	document.getElementById("opt2").innerHTML=data["opt2"];
+	     	document.getElementById("opt3").innerHTML=data["opt3"];
+	     	document.getElementById("opt4").innerHTML=data["opt4"];
+
+	     	document.getElementById("option1").value=data["opt1"];
+	     	document.getElementById("option2").value=data["opt2"];
+	     	document.getElementById("option3").value=data["opt3"];
+	     	document.getElementById("option4").value=data["opt4"];
+
+	     	var ele=document.getElementsByName("opt");
+    		for(var j=0;j<ele.length;j++)
+    			ele[j].checked=false;
+
+    		if(flag[i]==1){
+    			for(var j=0;j<ele.length;j++){
+    				if(ele[j].getAttribute('id')==rflag[i])
+    					ele[j].checked=true;
+    			}
+    		}
+		
+    			
+	    
+	    }
+	  };
+	  xhttp.open("GET", "load.php?c=2&qid="+question[++i], true);
+	  xhttp.send();
+	 
+		}
+	}
+    function previous(){
+    	var data=[];
+    	if(qnum>0){
+    	var xhttp=new XMLHttpRequest();
+	    xhttp.onreadystatechange = function() {
+	    if (xhttp.readyState == 4 && xhttp.status == 200) {
+	    	
+	     	data=JSON.parse(xhttp.responseText);
+	     	document.getElementById("q").innerHTML=(--qnum)+"."+data["question"];
+	     	document.getElementById("opt1").innerHTML=data["opt1"];
+	     	document.getElementById("opt2").innerHTML=data["opt2"];
+	     	document.getElementById("opt3").innerHTML=data["opt3"];
+	     	document.getElementById("opt4").innerHTML=data["opt4"];
+
+	     	document.getElementById("option1").value=data["opt1"];
+	     	document.getElementById("option2").value=data["opt2"];
+	     	document.getElementById("option3").value=data["opt3"];
+	     	document.getElementById("option4").value=data["opt4"];
+
+	     	var ele=document.getElementsByName("opt");
+    		for(var j=0;j<ele.length;j++)
+    			ele[j].checked=false;
+
+    		if(flag[i]==1){
+    			for(var j=0;j<ele.length;j++){
+    				if(ele[j].getAttribute('id')==rflag[i])
+    					ele[j].checked=true;
+    			}
+    		}
+	    
+	    }
+	  };
+	  xhttp.open("GET", "load.php?c=2&qid="+question[--i], true);
+	  xhttp.send();
+		}
+    }
+
+
+    function insert(rbutton){
+    	var xhttp=new XMLHttpRequest();
+    	xhttp.onreadystatechange= function(){
+    	if(xhttp.readyState==4 && xhttp.status==200){
+    		setFlag(1,rbutton.id);
+    	}
+    };
+    	xhttp.open("GET", "load.php?c=3&flag="+flag[i]+"&val="+rbutton.value+"&qid="+question[i], true);
+	    xhttp.send();
+	    	
+
+    }
+
+    function setFlag(f,r){
+    	flag[i]=f;
+    	rflag[i]=r;
+    }
+
+    function submit(){
+    	window.location="result.html";
+    }
+
+
+
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            window.location="result.html";
+        }
+    }, 1000);
+
+	}
+</script>
+</head>
+<style type="text/css">
+	h2{
+		border: 2px solid #ff6600;
+		background-color:#ff6600;
+		border-radius: 15px 50px;
+		padding: 20px;
+		font-size:32px;
+		font-style: italic;
+		font: Arial;
+
+	}
+	#q{
+		word-wrap: break-word;
+		font:Arial;
+		font-style: bold;
+		font-size: 22px;
+		margin-left: 30px;
+	}
+	#options{
+		margin-left: 30px;
+	}
+	.label{
+		font:Arial;
+		font-style: bold;
+		font-size: 22px;
+		
+	}
+	#time{
+		margin-left: 1100px;
+		font:Arial;
+		font-style: bold;
+		font-size: 32px;
+		border:2px solid #ff944d;
+		background-color:#ff944d;
+		padding: 5px;
+		text-align: center;
+	}
+	.buttons{
+		width:120px;
+		height:50px;
+		padding: 5px;
+		margin-top: 50px;
+		background-color:#ff944d;
+		font-size: 18px;
+		border-radius: 5px;
+		font-style: bold;
+    	display: inline-block;
+    	border-color: #ff944d;
+    	transition-duration:0.2s;
+    	box-shadow: 5px 5px 5px #ff944d;
+
+	
+	}
+	
+	#nxt{
+		margin-left: 230px;
+	}
+	#sub{
+		margin-left: 230px;
+	}
+	#pre{
+		margin-left: 10px;
+	}
+	
+</style>
+
+<body>
+<h2>Quiz Masters</h2>
+<div id="time"></div>
+
+<p id="q"></p><br><br><br>
+<div id="options">
+	<input type="radio" class="radio" id="option1" name="opt" onclick="insert(this)"><label class="label" id="opt1"></label></input><br>
+	<input type="radio" class="radio" id="option2" name="opt" onclick="insert(this)"></input><label class="label" id="opt2"></label><br>
+	<input type="radio" class="radio" id="option3" name="opt" onclick="insert(this)"></input><label class="label" id="opt3"></label><br>
+	<input type="radio" class="radio" id="option4" name="opt" onclick="insert(this)"></input><label class="label" id="opt4"></label><br>
+	<input type="button" class="buttons" value="previous" id="pre" onclick="previous()"></input><input type="button" class="buttons" value="next" id="nxt" onclick="next()"></input><input type="button" class="buttons" value="submit" id="sub" onclick="submit()"></input>
+</div>
+</body>
+</html>
